@@ -1,0 +1,31 @@
+#ant specific
+dist/
+build/
+
+#maven specific
+target/
+
+#netbeans specific
+nbproject/*
+!nbproject/project.properties
+!nbproject/project.xml
+!nbproject/jfx-impl.xml
+/nbproject/private/
+/build/
+/dist/
+nbactions.xml
+
+#java specific
+*.class
+
+#general swap/backup files
+*.so
+*.log
+*.out
+*~
+*.swp
+*.DS_Store
+*.lock
+release.properties
+pom.xml.releaseBackup
+pom.xml.tag
