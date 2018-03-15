@@ -20,7 +20,8 @@ package net.nailuj.jdotenv;
  *
  * @author Julian Blazek
  */
-public class DotenvException extends Exception{
+public class DotenvException extends Exception {
+
     public DotenvException() {
         super();
     }

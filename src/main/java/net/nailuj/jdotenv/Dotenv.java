@@ -35,11 +35,20 @@ public class Dotenv {
     private boolean validation = true;
     private boolean javaEnvOverwrite = false;
 
+    public Dotenv() {
+    }
+
+    public Dotenv(File dir) {
+        this.dir = dir;
+    }
+
     public HashMap<String, String> load() {
         DotenvLoader loader = new DotenvLoader(new File(dir, ".env"), validation);
         try {
             HashMap parse = loader.parse();
-            if(javaEnvOverwrite) setEnv(parse);
+            if (javaEnvOverwrite) {
+                setEnv(parse);
+            }
             return parse;
         } catch (IOException | DotenvException ex) {
             Logger.getLogger(Dotenv.class.getName()).log(Level.SEVERE, null, ex);

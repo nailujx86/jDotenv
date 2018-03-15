@@ -62,7 +62,11 @@ public class DotenvLoader {
             if (split.length > 2) {
                 continue;
             }
-            map.put(split[0], split[1]);
+            if (split[1] == "") {
+                map.put(split[0], null);
+            } else {
+                map.put(split[0], split[1]);
+            }
         }
         return map;
     }
@@ -75,6 +79,9 @@ public class DotenvLoader {
             }
             String[] split = curLine.split("=");
             if (split.length == 1) {
+                if (!curLine.equals("")) {
+                    return false;
+                }
                 if (curLine.trim().endsWith("=")) {
                     return false;
                 }
@@ -112,12 +119,12 @@ public class DotenvLoader {
         }
         return;
     }
-    
+
     private void loadFile() {
         if (envLines != null) {
             return;
         } else {
             reloadFile();
-        }       
+        }
     }
 }
