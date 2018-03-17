@@ -16,7 +16,10 @@
  */
 package net.nailuj.jdotenv;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Collections;
@@ -53,6 +56,28 @@ public class Dotenv {
         } catch (IOException | DotenvException ex) {
             Logger.getLogger(Dotenv.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
+            Logger.getLogger(Dotenv.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    public File save(Map<String, String> env) {
+        try {
+            FileWriter fw = null;
+            File envFile = new File(dir, ".env");
+            fw = new FileWriter(envFile);
+            BufferedWriter w = new BufferedWriter(fw);
+            String formatString = "%s=%s";
+            for (String key : env.keySet()) {
+                if (env.get(key) == null) {
+                    w.write(String.format(formatString, key, "") + "\n");
+                } else {
+                    w.write(String.format(formatString, key, env.get(key)) + "\n");
+                }
+            }
+            w.close();
+            return envFile;
+        } catch (IOException ex) {
             Logger.getLogger(Dotenv.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;

@@ -45,8 +45,10 @@ public class DotenvLoader {
     public HashMap parse() throws FileNotFoundException, IOException, DotenvException {
         loadFile();
         if (validate) {
-            if (!validate()) {
-                throw new DotenvException("File didn't pass validation!");
+            try {
+                validate();
+            } catch (DotenvException dex) {
+                dex.printStackTrace();
             }
         }
         HashMap<String, String> map;
@@ -54,43 +56,45 @@ public class DotenvLoader {
         for (String curLine : envLines) {
             if (curLine.startsWith("#")) {
                 continue;
-            }
-            String[] split = curLine.split("=");
-            if (split.length == 1) {
-                continue;
-            }
-            if (split.length > 2) {
-                continue;
-            }
-            if (split[1] == "") {
-                map.put(split[0], null);
             } else {
-                map.put(split[0], split[1]);
+                String[] split = curLine.split("=");
+                if (split.length == 1) {
+                    if (curLine.endsWith("=")) {
+                        map.put(split[0], null);
+                    } else {
+                        continue;
+                    }
+                } else if (split.length > 2) {
+                    continue;
+                } else {
+                    map.put(split[0], split[1]);
+                }
             }
         }
         return map;
     }
 
-    public boolean validate() {
+    public void validate() throws DotenvException {
         loadFile();
+        int lineCounter = 0;
         for (String curLine : envLines) {
+            lineCounter++;
             if (curLine.startsWith("#")) {
                 continue;
             }
             String[] split = curLine.split("=");
             if (split.length == 1) {
                 if (!curLine.equals("")) {
-                    return false;
+                    throw new DotenvException(String.format("Validation failed. No assignment in line %d", lineCounter));
                 }
                 if (curLine.trim().endsWith("=")) {
-                    return false;
+                    throw new DotenvException(String.format("Validation failed. Empty value in line %d: %s", lineCounter, curLine));
                 }
             }
             if (split.length > 2) {
-                return false;
+                throw new DotenvException(String.format("Validation failed. More than one assignment in one line %d", lineCounter));
             }
         }
-        return true;
     }
 
     public void reloadFile() {
