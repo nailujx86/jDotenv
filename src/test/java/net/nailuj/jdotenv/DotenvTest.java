@@ -143,8 +143,10 @@ public class DotenvTest {
     }
 
     /**
+     * https://stackoverflow.com/questions/318239/how-do-i-set-environment-variables-from-java
      * Test of writeToJavaEnv method, of class Dotenv.
      */
+    @org.junit.Ignore
     @org.junit.Test
     public void testWriteToJavaEnv() {
         try {
