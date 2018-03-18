@@ -6,6 +6,7 @@ jdk:
   - openjdk8
 os:
   - linux
+if: tag IS blank
 before_deploy:
   - export GIT_TAG=$TRAVIS_BRANCH-0.1.$TRAVIS_BUILD_NUMBER
   - git tag $GIT_TAG -a -m "Generated tag from TravisCI for build $TRAVIS_BUILD_NUMBER. Built with oraclejdk8."
